@@ -8,3 +8,8 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = "__all__"
 
+
+class BookListSerializer(BookSerializer):
+    class Meta:
+        model = Book
+        fields = ("id", "title", "author")
