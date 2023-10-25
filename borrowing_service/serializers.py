@@ -18,7 +18,7 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Borrowing
-        fields = '__all__'
+        fields = "__all__"
 
     def get_book_info(self, obj):
         book = object.book_id

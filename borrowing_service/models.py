@@ -12,21 +12,23 @@ class Borrowing(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return (f"Borrowed Book ID: {self.book_id},"
-                f" User ID: {self.user_id}, "
-                f"Borrow Date: {self.borrow_date}, "
-                f"Expected Return Date: {self.expected_return_date}, "
-                f"Actual Return Date: {self.actual_return_date}"
-                )
+        return (
+            f"Borrowed Book ID: {self.book_id},"
+            f" User ID: {self.user_id}, "
+            f"Borrow Date: {self.borrow_date}, "
+            f"Expected Return Date: {self.expected_return_date}, "
+            f"Actual Return Date: {self.actual_return_date}"
+        )
 
     def clean(self):
         if self.expected_return_date < self.borrow_date:
             raise ValidationError(
                 "Expected return date cannot be earlier than the borrow date."
             )
-        if (self.actual_return_date and
-                (self.actual_return_date < self.borrow_date or
-                 self.actual_return_date > self.expected_return_date)):
+        if self.actual_return_date and (
+            self.actual_return_date < self.borrow_date
+            or self.actual_return_date > self.expected_return_date
+        ):
             raise ValidationError(
                 "Actual return date must be between "
                 "borrow date and expected return date."
