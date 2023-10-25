@@ -1,6 +1,7 @@
 from rest_framework import viewsets
-from .models import Borrowing
 from .serializers import BorrowingSerializer, BorrowingDetailSerializer
+
+from .models import Borrowing
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):

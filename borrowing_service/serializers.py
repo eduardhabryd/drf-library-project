@@ -10,7 +10,9 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model = Borrowing
+        fields = "__all__"
 
 
 class BorrowingDetailSerializer(serializers.ModelSerializer):

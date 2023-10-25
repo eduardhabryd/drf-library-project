@@ -1,6 +1,7 @@
 from django.db import models
-from books.models import Book
 from rest_framework.exceptions import ValidationError
+
+from books.models import Book
 from users.models import User
 
 
