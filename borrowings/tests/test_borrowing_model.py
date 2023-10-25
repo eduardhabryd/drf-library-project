@@ -12,8 +12,7 @@ class BorrowingModelTests(TestCase):
             title="Test Book", author="Test Author", inventory=10, daily_fee=10.00
         )
 
-        User = get_user_model()
-        user = User.objects.create_user(email="test@example.com", password="testpassword")
+        user = get_user_model().objects.create_user(email="test@example.com", password="testpassword")
 
         borrowing = Borrowing(
             expected_return_date=date(2023, 11, 12),
