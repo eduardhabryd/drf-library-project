@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "users",
     "books",
-    "borrowing_service",
+    "borrowings",
 ]
 
 
