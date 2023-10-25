@@ -14,7 +14,10 @@ class Book(models.Model):
         default=Covers.HARD
     )
     inventory = models.IntegerField()
-    daily_fee = models.DecimalField()
+    daily_fee = models.DecimalField(
+        max_digits=5,
+        decimal_places=2
+    )
 
     def __str__(self) -> str:
         return f"{self.title} ({self.inventory})"
