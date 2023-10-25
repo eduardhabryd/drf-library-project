@@ -42,11 +42,6 @@ INSTALLED_APPS = [
     "books",
 ]
 
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "django.contrib.auth"
-    ]
-}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
