@@ -9,5 +9,8 @@ urlpatterns = [
         "borrowings.urls",
         namespace="borrowings")
          ),
-    path("api/payments/", include("payments.urls", namespace="payments")),
+    path("api/payments/", include(
+        "payments.urls",
+        namespace="payments")
+         ),
 ]
