@@ -87,13 +87,13 @@ class BorrowingTests(TestCase):
         self.assertEqual(Borrowing.objects.count(), 0)
 
 
-# class UnauthenticatedMovieApiTests(TestCase):
-#     def setUp(self):
-#         self.client = APIClient()
-#
-#     def test_auth_required(self):
-#         res = self.client.get(BORROWING_URL)
-#         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+class UnauthenticatedMovieApiTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_auth_required(self):
+        res = self.client.get(BORROWING_URL)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class AuthenticatedMovieApiTests(TestCase):
