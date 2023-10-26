@@ -21,4 +21,3 @@ class PaymentViewSet(
             return queryset
 
         return queryset.filter(borrowing__user_id=self.request.user.id)
-    
