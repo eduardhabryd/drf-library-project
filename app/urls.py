@@ -8,11 +8,7 @@ urlpatterns = [
     path("api/users/", include("users.urls", namespace="users")),
     path("api/borrowings/", include(
         "borrowings.urls",
-        namespace="borrowings")
-    ),
-    path("api/payments/", include(
-        "payments.urls",
-        namespace="payments"
+        namespace="borrowings"
     )),
     path("api/doc/", SpectacularAPIView.as_view(), name="schema"),
     path(
@@ -20,4 +16,8 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+    path("api/payments/", include(
+        "payments.urls",
+        namespace="payments"
+    )),
 ]
