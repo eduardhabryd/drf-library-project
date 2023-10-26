@@ -2,6 +2,7 @@ import asyncio
 
 from django.db import transaction
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from app.bot_service.bot import borrowing_creation_handler
 from books.models import Book
@@ -16,6 +17,25 @@ from .models import Borrowing
 
 class BorrowingViewSet(viewsets.ModelViewSet):
     queryset = Borrowing.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        user = self.request.user
+        user_id = self.request.query_params.get("user_id", None)
+        is_active = self.request.query_params.get("is_active", None)
+
+        if not user.is_staff:
+            queryset = queryset.filter(user=user)
+        else:
+            if user_id:
+                queryset = queryset.filter(user_id=user_id)
+
+        if is_active and is_active.lower() == "true":
+            queryset = queryset.filter(actual_return_date__isnull=True)
+
+        return queryset
 
     def get_serializer_class(self):
         if self.action == "retrieve":
