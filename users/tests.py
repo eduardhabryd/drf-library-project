@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 
 
 class UserManagerTest(TestCase):
-
     def test_create_user(self):
         user = get_user_model().objects.create_user(
             email="testuser@mail.com", password="password"

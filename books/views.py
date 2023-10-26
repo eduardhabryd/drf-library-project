@@ -14,7 +14,7 @@ class BookViewSet(ModelViewSet):
             return BookListSerializer
 
         return self.serializer_class
-    
+
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             return [AllowAny()]
