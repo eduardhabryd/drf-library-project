@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from users.models import User
@@ -13,6 +14,7 @@ from books.models import Book
 
 class BaseTest(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.user = User.objects.create_user(
             email="testuser@email.com",
             password="12345"
@@ -28,8 +30,8 @@ class BaseTest(TestCase):
             daily_fee=5.00
         )
         self.borrowing = Borrowing.objects.create(
-            user_id=self.user,
-            book_id=self.book,
+            user=self.user,
+            book=self.book,
             expected_return_date=datetime.date.today()
         )
         self.payment = Payment.objects.create(
