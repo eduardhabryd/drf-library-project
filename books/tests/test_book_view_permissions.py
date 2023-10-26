@@ -65,7 +65,7 @@ class AnonimUserPermissions(TestCase):
             "daily_fee": 10.99,
         }
         response = self.client.post(BOOK_LIST_URL, data=test_data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_anonymous_user_cannot_update_book(self):
         book = sample_book(data={"title": "Test123"})
@@ -77,12 +77,12 @@ class AnonimUserPermissions(TestCase):
             "daily_fee": 10.99,
         }
         response = self.client.put(get_book_detail_url(book.id), data=test_data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_anonymous_user_cannot_delete_book(self):
         book = sample_book(data={"title": "Test123"})
         response = self.client.delete(get_book_detail_url(book.id))
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class AdminUserPermissions(TestCase):
