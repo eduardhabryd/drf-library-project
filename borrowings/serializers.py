@@ -39,9 +39,7 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
 
-        print(data)
         book_pk = data.get("book").pk
-        print(book_pk)
         try:
             book = Book.objects.get(pk=book_pk)
         except Book.DoesNotExist:
