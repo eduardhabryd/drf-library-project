@@ -1,5 +1,7 @@
 from django.db import transaction
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from books.models import Book
 from .serializers import (
@@ -12,6 +14,8 @@ from .models import Borrowing
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Borrowing.objects.all()
