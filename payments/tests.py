@@ -56,7 +56,7 @@ class PaymentModelTest(BaseTest):
 class PaymentViewSetTest(BaseTest, APITestCase):
     def setUp(self):
         super().setUp()
-        self.admin = User.objects.create_superuser(
+        self.admin = get_user_model().create_superuser(
             email="admin@email.com",
             password="12345"
         )
