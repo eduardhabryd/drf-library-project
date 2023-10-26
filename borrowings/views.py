@@ -1,6 +1,8 @@
 import asyncio
 
 from django.db import transaction
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -44,6 +46,13 @@ class BorrowingViewSet(viewsets.ModelViewSet):
             return BorrowingCreateSerializer
         else:
             return BorrowingSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        redirect_url = reverse("stripe_pay:pay", args=[serializer.data["id"]])
+        return HttpResponseRedirect(redirect_url)
 
     def perform_create(self, serializer):
         with transaction.atomic():
