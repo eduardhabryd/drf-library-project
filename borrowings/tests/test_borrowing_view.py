@@ -46,10 +46,9 @@ class BorrowingTests(TestCase):
             daily_fee=10.00,
         )
         self.url = reverse("borrowings:borrowing-list")
-
-    def test_create_borrowing(self):
         self.client.force_authenticate(user=self.user)
 
+    def test_create_borrowing(self):
         data = {
             "borrow_date": datetime.now().date(),
             "expected_return_date": datetime.now().date() + timedelta(days=3),
