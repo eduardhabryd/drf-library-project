@@ -8,10 +8,15 @@ from books.models import Book
 class BorrowingModelTests(TestCase):
     def test_create_borrowing(self):
         book = Book.objects.create(
-            title="Test Book", author="Test Author", inventory=10, daily_fee=10.00
+            title="Test Book",
+            author="Test Author",
+            inventory=10,
+            daily_fee=10.00,
         )
 
-        user = get_user_model().objects.create_user(email="test@example.com", password="testpassword")
+        user = get_user_model().objects.create_user(
+            email="test@example.com", password="testpassword"
+        )
 
         borrowing = Borrowing(
             borrow_date=datetime.now().date(),
@@ -25,8 +30,14 @@ class BorrowingModelTests(TestCase):
         saved_borrowing = Borrowing.objects.get(pk=borrowing.pk)
 
         self.assertEqual(saved_borrowing.borrow_date, datetime.now().date())
-        self.assertEqual(saved_borrowing.expected_return_date, (datetime.now() + timedelta(days=1)).date())
-        self.assertEqual(saved_borrowing.actual_return_date, (datetime.now() + timedelta(days=2)).date())
+        self.assertEqual(
+            saved_borrowing.expected_return_date,
+            (datetime.now() + timedelta(days=1)).date(),
+        )
+        self.assertEqual(
+            saved_borrowing.actual_return_date,
+            (datetime.now() + timedelta(days=2)).date(),
+        )
         self.assertEqual(saved_borrowing.book, book)
         self.assertEqual(saved_borrowing.user, user)
 

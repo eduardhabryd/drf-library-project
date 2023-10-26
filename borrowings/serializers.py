@@ -26,7 +26,9 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
 
 
 class BorrowingCreateSerializer(serializers.ModelSerializer):
-    book = serializers.SlugRelatedField(many=False, slug_field="id", queryset=Book.objects.all())
+    book = serializers.SlugRelatedField(
+        many=False, slug_field="id", queryset=Book.objects.all()
+    )
     expected_return_date = serializers.DateField()
     actual_return_date = serializers.DateField(
         read_only=True, default=None, allow_null=True
@@ -43,9 +45,7 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
         try:
             book = Book.objects.get(pk=book_pk)
         except Book.DoesNotExist:
-            raise serializers.ValidationError(
-                "Book not found!"
-            )
+            raise serializers.ValidationError("Book not found!")
 
         if int(book.inventory) <= 0:
             raise serializers.ValidationError(
