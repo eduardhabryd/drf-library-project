@@ -15,7 +15,15 @@ from .models import Borrowing
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):
-    queryset = Borrowing.objects.all()
+
+    def get_queryset(self):
+        queryset = Borrowing.objects.all()
+        user = self.request.user
+
+        if not user.is_staff:
+            queryset = queryset.filter(user=user)
+
+        return queryset
 
     def get_serializer_class(self):
         if self.action == "retrieve":
