@@ -3,7 +3,6 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from users.models import User
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 
@@ -14,7 +13,7 @@ from books.models import Book
 
 class BaseTest(TestCase):
     def setUp(self):
-        self.user = get_user_model().create_user(
+        self.user = get_user_model().objects.create_user(
             email="testuser@email.com",
             password="12345"
         )
@@ -56,7 +55,7 @@ class PaymentModelTest(BaseTest):
 class PaymentViewSetTest(BaseTest, APITestCase):
     def setUp(self):
         super().setUp()
-        self.admin = get_user_model().create_superuser(
+        self.admin = get_user_model().objects.create_superuser(
             email="admin@email.com",
             password="12345"
         )
