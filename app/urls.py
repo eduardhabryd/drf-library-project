@@ -16,5 +16,5 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("api/payments/", include("payments.urls", namespace="payments")),
-    path("api/stripe_pay/", include("stripe_pay.urls")),
+    path("api/stripe_pay/", include("stripe_pay.urls", namespace="stripe_pay")),
 ]
