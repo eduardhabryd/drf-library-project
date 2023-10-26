@@ -29,11 +29,7 @@ class AnonimUserPermissions(TestCase):
     """Anonim Users can only list or retrieve books."""
 
     def setUp(self):
-        self.user = get_user_model().objects.create_user(
-            email="testuser@test.com",
-            password="12345678",
-        )
-        self.client.force_login(self.user)
+        self.client = APIClient()
 
     def test_anonymous_user_can_list_books(self):
         book = sample_book(data={"title": "Test"})
