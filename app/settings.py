@@ -150,8 +150,6 @@ SIMPLE_JWT = {
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZE",
 }
 
-
-
 SPECTACULAR_SETTINGS = {
     "TITLE": "Library API",
     "DESCRIPTION": "Documentation for library borrowing service",
