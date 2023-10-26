@@ -1,6 +1,9 @@
+import asyncio
+
 from django.db import transaction
 from rest_framework import viewsets
 
+from app.bot_service.bot import borrowing_creation_handler
 from books.models import Book
 from .serializers import (
     BorrowingSerializer,
@@ -29,3 +32,7 @@ class BorrowingViewSet(viewsets.ModelViewSet):
             book.inventory -= 1
             book.save()
             serializer.save(user=self.request.user)
+
+        borrowing = Borrowing.objects.last()
+        str(borrowing)
+        asyncio.run(borrowing_creation_handler(borrowing))
