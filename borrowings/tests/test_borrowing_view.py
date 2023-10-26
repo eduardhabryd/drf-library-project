@@ -69,6 +69,28 @@ class BorrowingTests(TestCase):
     #         str(date.today() + timedelta(days=3)),
     #     )
     #     self.assertIsNone(borrowing.actual_return_date)
+    #         self.client.force_authenticate(user=self.user)
+
+    def test_create_borrowing(self):
+        data = {
+            "borrow_date": datetime.now().date(),
+            "expected_return_date": datetime.now().date() + timedelta(days=3),
+            "book": self.book.pk,
+        }
+
+        response = self.client.post(self.url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Borrowing.objects.count(), 1)
+
+        borrowing = Borrowing.objects.get()
+        self.assertEqual(borrowing.user, self.user)
+        self.assertEqual(borrowing.book, self.book)
+        self.assertEqual(
+            str(borrowing.expected_return_date),
+            str(date.today() + timedelta(days=3)),
+        )
+        self.assertIsNone(borrowing.actual_return_date)
 
     def test_borrow_nonexistent_book(self):
         data = {"book": 999, "expected_return_date": "2023-11-01"}
