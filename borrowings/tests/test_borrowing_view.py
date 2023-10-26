@@ -14,8 +14,8 @@ class BorrowingTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(email='test_user@test.com', password="testpassword")
-        self.book = Book.objects.create(title='Test Book', author="Test Author", inventory=1, daily_fee=10.00)
+        self.user = get_user_model().objects.create_user(email="test_user@test.com", password="testpassword")
+        self.book = Book.objects.create(title="Test Book", author="Test Author", inventory=1, daily_fee=10.00)
         self.url = reverse("borrowings:borrowing-list")
 
     def test_create_borrowing(self):
@@ -27,7 +27,7 @@ class BorrowingTests(TestCase):
             "book": self.book.pk
         }
 
-        response = self.client.post(self.url, data, format='json')
+        response = self.client.post(self.url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Borrowing.objects.count(), 1)
