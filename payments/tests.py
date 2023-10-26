@@ -14,8 +14,7 @@ from books.models import Book
 
 class BaseTest(TestCase):
     def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(
+        self.user = get_user_model().create_user(
             email="testuser@email.com",
             password="12345"
         )
