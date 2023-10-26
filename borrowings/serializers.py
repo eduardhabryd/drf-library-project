@@ -7,6 +7,7 @@ from .models import Borrowing
 from books.serializers import BookSerializer
 from payments.serializers import PaymentSerializer
 
+
 class BorrowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Borrowing
@@ -24,7 +25,7 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
     def get_book_info(self, obj):
         book = obj.book
         return BookSerializer(book).data
-    
+
     def get_payment(self, obj):
         payment = obj.payment
         return PaymentSerializer(payment, many=False).data
