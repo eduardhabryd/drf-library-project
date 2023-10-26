@@ -16,9 +16,13 @@ class BorrowingViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Borrowing.objects.all()
         user = self.request.user
+        user_id = self.request.query_params.get("user_id", None)
 
         if not user.is_staff:
             queryset = queryset.filter(user=user)
+        else:
+            if user_id:
+                queryset = queryset.filter(user_id=user_id)
 
         return queryset
 
