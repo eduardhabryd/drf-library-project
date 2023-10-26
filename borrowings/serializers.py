@@ -26,7 +26,7 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
 
 
 class BorrowingCreateSerializer(serializers.ModelSerializer):
-    book = serializers.SlugRelatedField(many=False, slug_field="title", queryset=Book.objects.all())
+    book = serializers.SlugRelatedField(many=False, slug_field="id", queryset=Book.objects.all())
     expected_return_date = serializers.DateField()
     actual_return_date = serializers.DateField(
         read_only=True, default=None, allow_null=True
