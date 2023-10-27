@@ -1,14 +1,14 @@
+import asyncio
+
 import stripe
 from django.conf import settings
 from django.http.response import JsonResponse
-from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from rest_framework.decorators import api_view
-from rest_framework import status
-from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from app.bot_service.bot import successful_notification_handler
 from borrowings.models import Borrowing
 from books.models import Book
 from payments.models import Payment
@@ -44,7 +44,7 @@ def stripe_config(request):
 @csrf_exempt
 def create_checkout_session(request, borrowing_id=None):
     if request.method == "GET":
-        domain_url = request.build_absolute_uri(reverse("pay-view"))
+        domain_url = "http://localhost:8000/"
         stripe.api_key = settings.STRIPE_SECRET_KEY
         borrowing = Borrowing.objects.get(pk=borrowing_id)
         book = Book.objects.get(pk=borrowing.book.id)
@@ -138,6 +138,11 @@ def success_view(request):
     payment = Payment.objects.get(session_id=session_id)
     payment.status_payment = "PAI"
     payment.save()
+
+    borrowing = payment.borrowing
+    str(borrowing)
+    asyncio.run(successful_notification_handler(borrowing))
+
     return Response({"status": "success"})
 
 
