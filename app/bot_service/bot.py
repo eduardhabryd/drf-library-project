@@ -21,3 +21,9 @@ async def borrowing_creation_handler(borrowing) -> None:
     )
     await bot.send_message(chat_id=CHAT_ID, text=text)
     await bot.session.close()
+
+
+async def send_telegram_notification(text):
+    bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
+    await bot.send_message(chat_id=CHAT_ID, text=text)
+    await bot.session.close()
