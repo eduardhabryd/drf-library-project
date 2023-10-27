@@ -1,0 +1,25 @@
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+// Get Stripe publishable key
+fetch("/api/stripe_pay/config/")
+.then((result) => { return result.json(); })
+.then((data) => {
+  // Initialize Stripe.js
+  const stripe = Stripe(data.publicKey);
+
+  // Event handler
+  window.addEventListener("load", (event) => {
+    // Get Checkout Session ID
+    fetch("/api/stripe_pay/create-checkout-session-fine/{{ borrowing_id }}/")
+    .then((result) => { return result.json(); })
+    .then((data) => {
+      console.log(data);
+      // Redirect to Stripe Checkout
+      return stripe.redirectToCheckout({sessionId: data.sessionId})
+    })
+    .then((res) => {
+      console.log(res);
+    });
+  });
+});
+</script>
