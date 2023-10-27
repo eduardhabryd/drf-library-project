@@ -60,6 +60,10 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         return HttpResponseRedirect(redirect_url)
 
     def perform_create(self, serializer):
+        user = self.request.user
+        existing_borrowings = Borrowing.objects.filter(user=user)
+        if existing_borrowings:
+            raise ValueError("Error")
         with transaction.atomic():
             book_pk = serializer.validated_data["book"].pk
             book = Book.objects.get(pk=book_pk)

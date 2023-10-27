@@ -56,6 +56,7 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
         data = super().validate(attrs)
 
         book_pk = data.get("book").pk
+
         try:
             book = Book.objects.get(pk=book_pk)
         except Book.DoesNotExist:
