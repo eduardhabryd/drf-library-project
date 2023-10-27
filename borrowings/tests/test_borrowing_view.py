@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -183,26 +181,15 @@ class AdminBorrowingViewSetTests(TestCase):
 class ReturnBookTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
-            email="testuser@email.com",
-            password="12345"
-        )
+        self.borrowing = sample_borrowing()
+        self.user = self.borrowing.user
+        self.book = self.borrowing.book
         self.client.force_authenticate(self.user)
-        self.book = Book.objects.create(
-            title="Test Book",
-            inventory=1,
-            daily_fee=10
-        )
-        self.borrowing = Borrowing.objects.create(
-            user=self.user,
-            book=self.book,
-            expected_return_date=datetime.now()
-        )
 
     def test_return_book(self):
         response = self.client.post(
             reverse(
-                "borrowing:return_book",
+                "borrowing-return_book",
                 kwargs={"pk": self.borrowing.id}
             )
         )
