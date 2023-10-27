@@ -1,6 +1,8 @@
 from datetime import datetime
 
 from rest_framework import serializers
+from rest_framework.response import Response
+
 from books.models import Book
 from .models import Borrowing
 
@@ -16,7 +18,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
 
 class BorrowingDetailSerializer(serializers.ModelSerializer):
     book_info = serializers.SerializerMethodField()
-    payment = serializers.SerializerMethodField()
+    # payment = serializers.SerializerMethodField(read_only=True)
     is_returned = serializers.SerializerMethodField()
 
     class Meta:
@@ -28,8 +30,10 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
         return BookSerializer(book).data
 
     def get_payment(self, obj):
-        payment = obj.payment
-        return PaymentSerializer(payment, many=False).data
+        if obj.payment:
+            payment = obj.payment
+            return PaymentSerializer(payment, many=False).data
+        return "No payment"
 
     def get_is_returned(self, obj):
         return obj.is_returned()
