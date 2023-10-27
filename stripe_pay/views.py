@@ -140,6 +140,7 @@ def success_view(request):
     payment.save()
 
     borrowing = payment.borrowing
+    str(borrowing)
     asyncio.run(successful_notification_handler(borrowing))
 
     return Response({"status": "success"})
