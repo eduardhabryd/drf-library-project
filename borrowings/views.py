@@ -5,6 +5,7 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -13,6 +14,7 @@ from rest_framework import status
 
 from app.bot_service.bot import borrowing_creation_handler
 from books.models import Book
+from payments.models import Payment
 from .serializers import (
     BorrowingSerializer,
     BorrowingDetailSerializer,
@@ -60,6 +62,12 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         return HttpResponseRedirect(redirect_url)
 
     def perform_create(self, serializer):
+        user = self.request.user
+        existing_payments = Payment.objects.filter(
+            borrowing__user=user
+        ).filter(status_payment="PEN")
+        if existing_payments:
+            raise ValidationError("User have unfinished payment!")
         with transaction.atomic():
             book_pk = serializer.validated_data["book"].pk
             book = Book.objects.get(pk=book_pk)
