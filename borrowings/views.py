@@ -84,10 +84,15 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         book = borrowing.book
         book.inventory += 1
         book.save()
-        if borrowing.actual_return_date.date() > borrowing.expected_return_date:
-            url = reverse("stripe_pay:pay-fine", kwargs={"borrowing_id": borrowing.id})
+        if (
+            borrowing.actual_return_date.date()
+            > borrowing.expected_return_date
+        ):
+            url = reverse(
+                "stripe_pay:pay-fine", kwargs={"borrowing_id": borrowing.id}
+            )
             return HttpResponseRedirect(url)
-        
+
         return Response(
-            {"success": "Book has been returned."},
+            {"status": "Book has been returned."},
         )

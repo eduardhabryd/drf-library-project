@@ -20,7 +20,7 @@ class PayView(TemplateView):
         borrowing_id = self.kwargs.get("borrowing_id")
         context["borrowing_id"] = borrowing_id
         return context
-    
+
 
 class PayFineView(TemplateView):
     template_name = "pay_fine.html"
@@ -42,7 +42,7 @@ def stripe_config(request):
 @csrf_exempt
 def create_checkout_session(request, borrowing_id=None):
     if request.method == "GET":
-        domain_url = 'http://localhost:8000/'
+        domain_url = "http://localhost:8000/"
         stripe.api_key = settings.STRIPE_SECRET_KEY
         borrowing = Borrowing.objects.get(pk=borrowing_id)
         book = Book.objects.get(pk=borrowing.book.id)
@@ -52,8 +52,9 @@ def create_checkout_session(request, borrowing_id=None):
         price = int(book.daily_fee * 100 * days)
         try:
             checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=domain_url + 'api/stripe_pay/cancel/',
+                success_url=domain_url
+                + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "api/stripe_pay/cancel/",
                 payment_method_types=["card"],
                 mode="payment",
                 line_items=[
@@ -81,11 +82,13 @@ def create_checkout_session(request, borrowing_id=None):
         except Exception as e:
             return JsonResponse({"error": str(e)})
 
+
 FINE_MULTIPLIER = 2
+
 
 def create_checkout_session_fine(request, borrowing_id=None):
     if request.method == "GET":
-        domain_url = 'http://localhost:8000/'
+        domain_url = "http://localhost:8000/"
         stripe.api_key = settings.STRIPE_SECRET_KEY
         borrowing = Borrowing.objects.get(pk=borrowing_id)
         book = Book.objects.get(pk=borrowing.book.id)
@@ -95,8 +98,9 @@ def create_checkout_session_fine(request, borrowing_id=None):
         price = int(book.daily_fee * 100 * days * FINE_MULTIPLIER)
         try:
             checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=domain_url + 'api/stripe_pay/cancel/',
+                success_url=domain_url
+                + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "api/stripe_pay/cancel/",
                 payment_method_types=["card"],
                 mode="payment",
                 line_items=[
@@ -137,5 +141,8 @@ def success_view(request):
 @api_view(["GET"])
 def cancelled_view(request):
     return Response(
-        {"status": "payment canceled, but you can pay a bit later, (but the session is available for only 24h)"}
+        {
+            "status": "payment canceled, but you can pay a bit later, "
+            "(but the session is available for only 24h)"
+        }
     )
