@@ -14,8 +14,8 @@ class PayView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        borrowing_id = self.kwargs.get('borrowing_id')
-        context['borrowing_id'] = borrowing_id
+        borrowing_id = self.kwargs.get("borrowing_id")
+        context["borrowing_id"] = borrowing_id
         return context
 
 
@@ -46,14 +46,14 @@ def create_checkout_session(request, borrowing_id=None):
                 mode="payment",
                 line_items=[
                     {
-                        'price_data': {
-                            'currency': 'usd',
-                            'product_data': {
-                                'name': book_name,
+                        "price_data": {
+                            "currency": "usd",
+                            "product_data": {
+                                "name": book_name,
                             },
-                            'unit_amount': price,
+                            "unit_amount": price,
                         },
-                        'quantity': 1,
+                        "quantity": 1,
                     }
                 ],
             )
