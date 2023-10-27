@@ -42,21 +42,32 @@ API Root Page:
 
 ...
 
+
 Books Page:
 
-...
+[Demo](demo/book_list.png)
 
 User Profile:
 
-... 
+[Demo](demo/create_user.png)
 
 Borrowing and Payment:
 
-...
+Borrowing List:
+[Demo](demo/borrowing_list.png)
+
+Create borrowing:
+[Demo](demo/create_borrowings.png)
+
+Payment:
+[Demo](demo/payment.png)
+
+Payment List:
+[Demo](demo/payment_list.png)
 
 Telegram Notifications:
 
-...
+[Demo](demo/telegram.png)
 
 
 
