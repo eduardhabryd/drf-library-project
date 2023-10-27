@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "borrowings",
     "payments",
     "stripe_pay.apps.StripePayConfig",
+    "django_q",
 ]
 
 
@@ -123,3 +124,16 @@ SPECTACULAR_SETTINGS = {
 
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+
+
+Q_CLUSTER = {
+    "name": "mycluster",
+    "workers": 4,
+    "recycle": 500,
+    "timeout": 60,
+    "django_sync": True,
+    "cpu_affinity": 1,
+    "label": "Django-Q",
+    "orm": "default",
+    "use_stored": True,
+}
