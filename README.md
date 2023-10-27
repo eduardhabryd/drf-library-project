@@ -38,11 +38,6 @@ ___
 ___
 Here are some screenshots from the Library Service Project:
 ___
-API Root Page:
-
-...
-
-
 Book Page:
 
 ![Demo](demo/book_list.png)
