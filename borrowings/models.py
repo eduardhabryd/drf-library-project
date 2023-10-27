@@ -42,3 +42,6 @@ class Borrowing(models.Model):
                 "Actual return date must be between "
                 "borrow date and expected return date."
             )
+
+    def is_returned(self):
+        return self.actual_return_date is not None

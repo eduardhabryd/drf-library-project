@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -179,3 +179,40 @@ class AdminBorrowingViewSetTests(TestCase):
         res = self.client.get(url)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
+
+class ReturnBookTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = get_user_model().objects.create_user(
+            email="testuser@email.com",
+            password="12345"
+        )
+        self.client.force_authenticate(self.user)
+        self.book = Book.objects.create(
+            title="Test Book",
+            inventory=1,
+            daily_fee=10
+        )
+        self.borrowing = Borrowing.objects.create(
+            user=self.user,
+            book=self.book,
+            expected_return_date=datetime.now()
+        )
+
+    def test_return_book(self):
+        response = self.client.post(
+            reverse(
+                "borrowing:return_book",
+                kwargs={"pk": self.borrowing.id}
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data,
+            {"status": "Book returned"}
+        )
+        self.borrowing.refresh_from_db()
+        self.assertIsNotNone(self.borrowing.actual_return_date)
+        self.book.refresh_from_db()
+        self.assertEqual(self.book.inventory, 1)
