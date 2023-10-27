@@ -85,7 +85,7 @@ def create_checkout_session(request, borrowing_id=None):
 
 FINE_MULTIPLIER = 2
 
-
+@csrf_exempt
 def create_checkout_session_fine(request, borrowing_id=None):
     if request.method == "GET":
         domain_url = "http://localhost:8000/"
