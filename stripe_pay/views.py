@@ -1,7 +1,6 @@
 import stripe
 from django.conf import settings
 from django.http.response import JsonResponse
-from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from rest_framework.decorators import api_view
@@ -84,6 +83,7 @@ def create_checkout_session(request, borrowing_id=None):
 
 
 FINE_MULTIPLIER = 2
+
 
 @csrf_exempt
 def create_checkout_session_fine(request, borrowing_id=None):

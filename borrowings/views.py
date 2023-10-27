@@ -63,7 +63,9 @@ class BorrowingViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        existing_payments = Payment.objects.filter(borrowing__user=user).filter(status_payment="PEN")
+        existing_payments = Payment.objects.filter(
+            borrowing__user=user
+        ).filter(status_payment="PEN")
         if existing_payments:
             raise ValidationError("User have unfinished payment!")
         with transaction.atomic():
