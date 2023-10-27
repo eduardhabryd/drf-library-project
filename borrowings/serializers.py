@@ -30,7 +30,7 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
     def get_payment(self, obj):
         payment = obj.payment
         return PaymentSerializer(payment, many=False).data
-    
+
     def get_is_returned(self, obj):
         return obj.is_returned()
 

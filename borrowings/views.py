@@ -77,7 +77,7 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         if borrowing.is_returned():
             return Response(
                 {"error": "Book has already been returned."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         borrowing.actual_return_date = datetime.now()
         borrowing.save()
