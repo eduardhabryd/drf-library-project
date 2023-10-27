@@ -4,7 +4,12 @@ from django.http.response import JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+<<<<<<< HEAD
 from rest_framework.decorators import api_view
+=======
+from rest_framework import status
+from rest_framework.decorators import action
+>>>>>>> c6f02d6 (fixed tests)
 from rest_framework.response import Response
 
 from borrowings.models import Borrowing
@@ -42,7 +47,7 @@ def stripe_config(request):
 @csrf_exempt
 def create_checkout_session(request, borrowing_id=None):
     if request.method == "GET":
-        domain_url = "http://localhost:8000/"
+        domain_url = request.build_absolute_uri(reverse("pay-view"))
         stripe.api_key = settings.STRIPE_SECRET_KEY
         borrowing = Borrowing.objects.get(pk=borrowing_id)
         book = Book.objects.get(pk=borrowing.book.id)
@@ -83,6 +88,7 @@ def create_checkout_session(request, borrowing_id=None):
             return JsonResponse({"error": str(e)})
 
 
+<<<<<<< HEAD
 FINE_MULTIPLIER = 2
 
 @csrf_exempt
@@ -146,3 +152,31 @@ def cancelled_view(request):
             "(but the session is available for only 24h)"
         }
     )
+=======
+@action(methods=["GET"], detail=False, url_path="success")
+def success_action(self, request):
+    if session_id := request.query_params.get("session_id"):
+        try:
+            payment = Payment.objects.get(session_id=session_id)
+
+
+            payment.status_payment = "PAID"
+            payment.save()
+            return Response({"info": "Your payment was successful"}, status=status.HTTP_200_OK)
+        except Payment.DoesNotExist:
+            return Response({"info": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@action(methods=["GET"], detail=False, url_path="cancel")
+def cancel_action(self, request):
+    return Response(
+        {
+            "info": (
+                "Payment can be performed a bit later. "
+                "Session will be active for 24 hours."
+            )
+        },
+        status=status.HTTP_200_OK,
+    )
+>>>>>>> c6f02d6 (fixed tests)
