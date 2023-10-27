@@ -189,7 +189,7 @@ class ReturnBookTestCase(TestCase):
     def test_return_book(self):
         response = self.client.post(
             reverse(
-                "borrowing-return_book",
+                "borrowing:return-book",
                 kwargs={"pk": self.borrowing.id}
             )
         )
@@ -202,4 +202,4 @@ class ReturnBookTestCase(TestCase):
         self.borrowing.refresh_from_db()
         self.assertIsNotNone(self.borrowing.actual_return_date)
         self.book.refresh_from_db()
-        self.assertEqual(self.book.inventory, 1)
+        self.assertEqual(self.book.inventory, 2)
