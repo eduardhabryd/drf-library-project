@@ -42,8 +42,8 @@ def create_checkout_session(request, borrowing_id=None):
         try:
             checkout_session = stripe.checkout.Session.create(
                 success_url=domain_url
-                + "success?session_id={CHECKOUT_SESSION_ID}",
-                cancel_url=domain_url + "cancelled/",
+                + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "api/stripe_pay/cancel/",
                 payment_method_types=["card"],
                 mode="payment",
                 line_items=[
@@ -73,8 +73,16 @@ def create_checkout_session(request, borrowing_id=None):
 
 
 @api_view(["GET"])
-def success_view(request, session_id):
+def success_view(request):
+    session_id = request.query_params.get("session_id")
     payment = Payment.objects.get(session_id=session_id)
     payment.status_payment = "PAI"
     payment.save()
     return Response({"status": "success"})
+
+
+@api_view(["GET"])
+def cancelled_view(request):
+    return Response(
+        {"status": "payment canceled, but you can pay a bit later, (but the session is available for only 24h)"}
+    )
