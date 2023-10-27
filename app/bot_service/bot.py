@@ -26,7 +26,7 @@ async def borrowing_creation_handler(borrowing) -> None:
 async def successful_notification_handler(borrowing) -> None:
     bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
     text = (
-        f"User {borrowing.user} successfully paid"
+        f"User {borrowing.user} successfully paid for book {hbold(borrowing.book.title)}"
     )
     await bot.send_message(chat_id=CHAT_ID, text=text)
     await bot.session.close()
