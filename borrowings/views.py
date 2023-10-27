@@ -1,3 +1,4 @@
+from datetime import datetime
 import asyncio
 
 from django.db import transaction
@@ -5,6 +6,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from app.bot_service.bot import borrowing_creation_handler
 from books.models import Book
@@ -65,3 +70,18 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         borrowing = Borrowing.objects.last()
         str(borrowing)
         asyncio.run(borrowing_creation_handler(borrowing))
+
+    @action(detail=True, methods=["post"])
+    def return_book(self, request, pk=None):
+        borrowing = self.get_object()
+        if borrowing.is_returned():
+            return Response(
+                {"error": "Book has already been returned."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        borrowing.actual_return_date = datetime.now()
+        borrowing.save()
+        book = borrowing.book
+        book.inventory += 1
+        book.save()
+        return Response({"status": "Book returned"})

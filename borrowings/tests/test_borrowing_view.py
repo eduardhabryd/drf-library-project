@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta, date
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -179,3 +177,23 @@ class AdminBorrowingViewSetTests(TestCase):
         res = self.client.get(url)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
+
+class ReturnBookTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.borrowing = sample_borrowing()
+        self.user = self.borrowing.user
+        self.book = self.borrowing.book
+        self.client.force_authenticate(self.user)
+
+    def test_return_book(self):
+        response = self.client.post(
+            reverse("borrowing:return-book", kwargs={"pk": self.borrowing.id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {"status": "Book returned"})
+        self.borrowing.refresh_from_db()
+        self.assertIsNotNone(self.borrowing.actual_return_date)
+        self.book.refresh_from_db()
+        self.assertEqual(self.book.inventory, 2)
