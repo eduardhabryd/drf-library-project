@@ -3,6 +3,8 @@ from django.conf import settings
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from borrowings.models import Borrowing
 from books.models import Book
@@ -68,3 +70,11 @@ def create_checkout_session(request, borrowing_id=None):
             return JsonResponse({"sessionId": checkout_session["id"]})
         except Exception as e:
             return JsonResponse({"error": str(e)})
+
+
+@api_view(["GET"])
+def success_view(request, session_id):
+    payment = Payment.objects.get(session_id=session_id)
+    payment.status_payment = "PAI"
+    payment.save()
+    return Response({"status": "success"})
