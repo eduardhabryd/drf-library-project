@@ -192,7 +192,7 @@ class ReturnBookTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {"status": "Book returned"})
+        self.assertEqual(response.data, {"status": "Book has been returned."})
         self.borrowing.refresh_from_db()
         self.assertIsNotNone(self.borrowing.actual_return_date)
         self.book.refresh_from_db()
