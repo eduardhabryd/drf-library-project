@@ -16,7 +16,8 @@ def check_overdue_borrowings():
     if overdue_borrowings.exists():
         for borrowing in overdue_borrowings:
             text = (
-                f"User {borrowing.user} took {hbold(borrowing.book.title)} book\n"
+                f"User {borrowing.user}"
+                f" took {hbold(borrowing.book.title)} book\n"
                 + f"Expected return date: {borrowing.expected_return_date}\n"
                 + f"{borrowing.book.inventory} books left"
             )
