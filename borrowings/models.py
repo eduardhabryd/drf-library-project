@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from rest_framework.exceptions import ValidationError
 
@@ -13,7 +14,7 @@ class Borrowing(models.Model):
         Book, on_delete=models.CASCADE, related_name="borrowings"
     )
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="borrowings"
+        get_user_model(), on_delete=models.CASCADE, related_name="borrowings"
     )
 
     def __str__(self):
