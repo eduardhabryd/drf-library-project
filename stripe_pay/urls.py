@@ -10,8 +10,6 @@ from stripe_pay.views import (
     create_checkout_session_fine,
 )
 
-
-
 urlpatterns = [
     path("pay/<int:borrowing_id>/", PayView.as_view(), name="pay"),
     path(
