@@ -7,7 +7,7 @@ ___
 To get started with the Library Service Project, follow these steps:
 
 - Python 3 must be installed.
-- Create .evn using `.env.sample`.
+- Create '.env' file using a '.env.sample'.
 - Run these commands:
 
    ```bash
@@ -37,26 +37,32 @@ ___
 ## 📷 Demo
 ___
 Here are some screenshots from the Library Service Project:
+___
+Book Page:
 
-API Root Page:
-
-...
-
-Books Page:
-
-...
+![Demo](demo/book_list.png)
 
 User Profile:
 
-... 
+![Demo](demo/create_user.png)
 
 Borrowing and Payment:
 
-...
+Borrowing List:
+![Demo](demo/borrowing_list.png)
+
+Create borrowing:
+![Demo](demo/create_borrowings.png)
+
+Payment:
+![Demo](demo/payment.png)
+
+Payment List:
+![Demo](demo/payment_list.png)
 
 Telegram Notifications:
 
-...
+![Demo](demo/telegram.png)
 
 
 
