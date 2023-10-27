@@ -1,3 +1,5 @@
+import asyncio
+
 import stripe
 from django.conf import settings
 from django.http.response import JsonResponse
@@ -7,6 +9,7 @@ from django.views.generic.base import TemplateView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from app.bot_service.bot import successful_notification_handler
 from borrowings.models import Borrowing
 from books.models import Book
 from payments.models import Payment
@@ -135,6 +138,10 @@ def success_view(request):
     payment = Payment.objects.get(session_id=session_id)
     payment.status_payment = "PAI"
     payment.save()
+
+    borrowing = payment.borrowing
+    asyncio.run(successful_notification_handler(borrowing))
+
     return Response({"status": "success"})
 
 
