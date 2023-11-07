@@ -13,10 +13,6 @@ jobs:
     services:
       postgres:
         image: postgres:14-alpine
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -28,18 +24,12 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Set environment variables
-        run: |
-          echo "POSTGRES_USER=${{ secrets.DB_USER }}" > .env.github
-          echo "POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env.github
-          echo "POSTGRES_DB=${{ secrets.DB_NAME }}" >> .env.github
-
       - name: Build and run Docker containers for GitHub
-        run: docker-compose -f docker-compose.github.yml --env-file .env.github up -d --build
+        run: docker-compose -f docker-compose.github.yml up -d --build
 
       - name: Wait for PostgreSQL to start
         run: |
-          while ! docker exec -i library python manage.py migrate; do
+          while ! docker exec -i app python manage.py migrate; do
             echo "Waiting for PostgreSQL to start..."
             sleep 5
           done
