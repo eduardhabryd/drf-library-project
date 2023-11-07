@@ -1,6 +1,5 @@
 import asyncio
 
-import stripe
 from django.conf import settings
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -9,10 +8,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from app.bot_service.bot import successful_notification_handler
-from borrowings.models import Borrowing
-from books.models import Book
 from payments.models import Payment
-from .stripe_services import create_checkout_session, create_checkout_sesison_fine
+from .stripe_services import (
+    create_checkout_session as create_stripe_checkout_session,
+    create_checkout_session_fine as create_stripe_checkout_session_fine
+)
 
 
 class PayView(TemplateView):
@@ -47,7 +47,9 @@ def create_checkout_session(request, borrowing_id=None):
     if request.method == "GET":
         domain_url = "http://localhost:8000/"
         try:
-            session_id = create_checkout_session(domain_url, borrowing_id)
+            session_id = create_stripe_checkout_session(
+                domain_url, borrowing_id
+            )
             return JsonResponse({"sessionId": session_id})
         except Exception as e:
             return JsonResponse({"error": str(e)})
@@ -61,7 +63,9 @@ def create_checkout_session_fine(request, borrowing_id=None):
     if request.method == "GET":
         domain_url = "http://localhost:8000/"
         try:
-            session_id = create_checkout_sesison_fine(domain_url, borrowing_id, FINE_MULTIPLIER)
+            session_id = create_stripe_checkout_session_fine(
+                domain_url, borrowing_id, FINE_MULTIPLIER
+            )
             return JsonResponse({"sessionId": session_id})
         except Exception as e:
             return JsonResponse({"error": str(e)})
