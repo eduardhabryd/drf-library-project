@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, date
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -49,26 +50,28 @@ class BorrowingTests(TestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_create_borrowing(self):
+        with patch("asyncio.run") as redirect_mock:
+            redirect_mock.return_value = None
 
-        data = {
-            "borrow_date": datetime.now().date(),
-            "expected_return_date": datetime.now().date() + timedelta(days=3),
-            "book": self.book.pk,
-        }
+            data = {
+                "borrow_date": datetime.now().date(),
+                "expected_return_date": datetime.now().date() + timedelta(days=3),
+                "book": self.book.pk,
+            }
 
-        response = self.client.post(self.url, data, format="json")
+            response = self.client.post(self.url, data, format="json")
 
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertEqual(Borrowing.objects.count(), 1)
+            self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+            self.assertEqual(Borrowing.objects.count(), 1)
 
-        borrowing = Borrowing.objects.get()
-        self.assertEqual(borrowing.user, self.user)
-        self.assertEqual(borrowing.book, self.book)
-        self.assertEqual(
-            str(borrowing.expected_return_date),
-            str(date.today() + timedelta(days=3)),
-        )
-        self.assertIsNone(borrowing.actual_return_date)
+            borrowing = Borrowing.objects.get()
+            self.assertEqual(borrowing.user, self.user)
+            self.assertEqual(borrowing.book, self.book)
+            self.assertEqual(
+                str(borrowing.expected_return_date),
+                str(date.today() + timedelta(days=3)),
+            )
+            self.assertIsNone(borrowing.actual_return_date)
 
     def test_borrow_nonexistent_book(self):
         data = {"book": 999, "expected_return_date": "2023-11-01"}
