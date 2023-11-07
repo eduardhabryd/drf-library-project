@@ -28,8 +28,14 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Build and run Docker containers
-        run: docker-compose -f docker-compose.github.yml up -d --build
+      - name: Set environment variables
+        run: |
+          echo "POSTGRES_USER=${{ secrets.DB_USER }}" > .env.github
+          echo "POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env.github
+          echo "POSTGRES_DB=${{ secrets.DB_NAME }}" >> .env.github
+
+      - name: Build and run Docker containers for GitHub
+        run: docker-compose -f docker-compose.github.yml --env-file .env.github up -d --build
 
       - name: Wait for PostgreSQL to start
         run: |
