@@ -10,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_USER: your_postgres_user
+          POSTGRES_PASSWORD: your_postgres_password
+          POSTGRES_DB: your_database_name
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -18,6 +27,16 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.10"
+
+      - name: Build and run Docker containers
+        run: docker-compose up -d --build
+
+      - name: Wait for PostgreSQL to start
+        run: |
+          while ! docker exec -i your_project_name python manage.py migrate; do
+            echo "Waiting for PostgreSQL to start..."
+            sleep 5
+          done
 
       - name: Install requirements.txt
         run: |
@@ -28,5 +47,4 @@ jobs:
         run: flake8
 
       - name: Run tests
-        timeout-minutes: 5
         run: python manage.py test
