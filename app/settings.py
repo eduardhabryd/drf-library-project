@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "borrowings",
     "payments",
     "stripe_pay.apps.StripePayConfig",
+    "django_nose",
 ]
 
 
