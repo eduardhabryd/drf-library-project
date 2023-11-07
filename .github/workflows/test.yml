@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 10
 
     services:
-      db:
+      postgres:
         image: postgres:14
         env:
           POSTGRES_DB: app
@@ -22,8 +22,6 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
         image: redis
-        ports:
-          - 6379:6379
 
     steps:
       - name: Checkout repo
@@ -41,20 +39,11 @@ jobs:
             sleep 5
           done
 
-      - name: Build and run Docker containers for GitHub
-        run: docker-compose -f docker-compose.github.yml up --build -d
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       - name: Run flake8
-        run: docker exec -i app flake8
+        run: flake8
 
-      - name: Run books tests. Test model
-        run: docker exec -i app python manage.py test books.tests.test_book_model
-
-      - name: Run books tests. Test AnonimUserPermissions
-        run: docker exec -i app python manage.py test books.tests.test_book_view_permissions.AnonimUserPermissions
-
-      - name: Run books tests. Test AdminUserPermissions
-        run: docker exec -i app python manage.py test books.tests.test_book_view_permissions.AdminUserPermissions
-
-      - name: Run books tests. Test AuthenticatedUserPermissions
-        run: docker exec -i app python manage.py test books.tests.test_book_view_permissions.AuthenticatedUserPermissions
+      - name: Run tests
+        run: python manage.py test
