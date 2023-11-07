@@ -25,5 +25,14 @@ jobs:
       - name: Run flake8
         run: docker exec -i app flake8
 
-      - name: Run books tests, test model
+      - name: Run books tests. Test model
         run: docker exec -i app python manage.py test books.tests.test_book_model
+
+      - name: Run books tests. Test AnonimUserPermissions
+        run: docker exec -i app python manage.py test books.tests.test_book_view_permissions.AnonimUserPermissions
+
+      - name: Run books tests. Test AdminUserPermissions
+        run: docker exec -i app python manage.py test books.tests.test_book_view_permissions.AdminUserPermissions
+
+      - name: Run books tests. Test AuthenticatedUserPermissions
+        run: docker exec -i app python manage.py test books.tests.test_book_view_permissions.AuthenticatedUserPermissions
