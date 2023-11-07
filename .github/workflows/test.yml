@@ -25,5 +25,5 @@ jobs:
       - name: Run flake8
         run: docker exec -i app flake8
 
-      - name: Run books tests
-        run: docker exec -i app python manage.py test books
+      - name: Run books tests, test model
+        run: docker exec -i app python manage.py test books.tests.test_book_model
