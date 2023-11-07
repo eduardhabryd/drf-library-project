@@ -2,24 +2,27 @@
 ___
 A modern and efficient library management system to streamline book inventory, borrowing, payments, and notifications.
 
-## 🚀 Installation
+## 🚀 Getting started
 ___
-To get started with the Library Service Project, follow these steps:
 
 - Python 3 must be installed.
-- Create '.env' file using a '.env.sample'.
-- Run these commands:
+- Install Docker if it's not already installed. You can download it [here](https://www.docker.com/products/docker-desktop).
+- Create `.env` file using `.env.example`:
+  
+  - don't change `POSTGRES_HOST` or at least make sure to have it the same as related docker container name.
+- Clone repository and open folder in terminal:
+```shell
+git clone https://github.com/eduardhabryd/drf-library-project.git
+cd drf-library-project
+```
 
-   ```bash
-   git clone https://github.com/eduardhabryd/drf-library-project.git
-   cd drf-library-project
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use venv\Scripts\activate
-   pip install -r requirements.txt
-   python manage.py migrate
-   python manage.py runserver
-   ```
-- Access the application at http://localhost:8000 (or another custom host you use) in your web browser.
+### 🐳 Run with Docker
+
+Run the following command to build and start the Docker containers:
+```shell
+docker-compose up --build
+```
+Access the application at http://localhost:8000 (or another custom host you use) in your web browser.
 
 ## 📦 Features
 ___
