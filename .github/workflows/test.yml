@@ -39,7 +39,7 @@ jobs:
 
       - name: Wait for PostgreSQL to start
         run: |
-          while ! docker exec -i app python manage.py migrate; do
+          while ! docker exec -i library python manage.py migrate; do
             echo "Waiting for PostgreSQL to start..."
             sleep 5
           done
