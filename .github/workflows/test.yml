@@ -20,7 +20,7 @@ jobs:
           python-version: "3.10"
 
       - name: Build and run Docker containers for GitHub
-        run: docker-compose -f docker-compose.github.yml up --build
+        run: docker-compose -f docker-compose.github.yml up --build -d
 
       - name: Run flake8
         run: flake8
