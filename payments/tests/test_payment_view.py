@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 
-from .base_test import BaseTest
+from payments.tests.base_test import BaseTest
 
 
 class PaymentViewSetTest(BaseTest, APITestCase):

@@ -15,7 +15,7 @@ from rest_framework import status
 from app.bot_service.bot import borrowing_creation_handler
 from books.models import Book
 from payments.models import Payment
-from .serializers import (
+from borrowings.serializers import (
     BorrowingSerializer,
     BorrowingDetailSerializer,
     BorrowingCreateSerializer,
