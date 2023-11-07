@@ -23,7 +23,7 @@ jobs:
         run: docker-compose -f docker-compose.github.yml up --build -d
 
       - name: Run flake8
-        run: flake8
+        run: docker exec -i app flake8
 
       - name: Run tests inside Docker container
         run: docker exec -i app python manage.py test
