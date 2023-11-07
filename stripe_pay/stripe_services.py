@@ -16,7 +16,8 @@ def create_checkout_session(domain_url, borrowing_id):
     price = int(book.daily_fee * 100 * days)
 
     checkout_session = stripe.checkout.Session.create(
-        success_url=domain_url + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
+        success_url=domain_url
+        + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
         cancel_url=domain_url + "api/stripe_pay/cancel/",
         payment_method_types=["card"],
         mode="payment",
@@ -44,7 +45,7 @@ def create_checkout_session(domain_url, borrowing_id):
     return checkout_session["id"]
 
 
-def create_checkout_sesison_fine(domain_url, borrowing_id, fine_multiplier):
+def create_checkout_session_fine(domain_url, borrowing_id, fine_multiplier):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     borrowing = Borrowing.objects.get(pk=borrowing_id)
     book = Book.objects.get(pk=borrowing.book.id)
@@ -53,7 +54,8 @@ def create_checkout_sesison_fine(domain_url, borrowing_id, fine_multiplier):
     days = days.days
     price = int(book.daily_fee * 100 * days * fine_multiplier)
     checkout_session = stripe.checkout.Session.create(
-        success_url=domain_url + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
+        success_url=domain_url
+        + "api/stripe_pay/success?session_id={CHECKOUT_SESSION_ID}",
         cancel_url=domain_url + "api/stripe_pay/cancel/",
         payment_method_types=["card"],
         mode="payment",
