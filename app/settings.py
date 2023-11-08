@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "payments",
     "stripe_pay.apps.StripePayConfig",
     "django_nose",
+    "django_celery_beat",
 ]
 
 
@@ -128,3 +129,9 @@ STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 
 MEDIA_ROOT = "/vol/web/media"
+
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_TIMEZONE = "Europe/Kyiv"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
