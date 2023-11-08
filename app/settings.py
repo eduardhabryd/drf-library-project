@@ -8,11 +8,9 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = (
-    os.environ.get("DJANGO_SECRET_KEY", default="secret_key")
-)
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-key")
 
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -30,6 +28,7 @@ INSTALLED_APPS = [
     "borrowings",
     "payments",
     "stripe_pay.apps.StripePayConfig",
+    "django_nose",
 ]
 
 
@@ -65,8 +64,12 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "app"),
+        "USER": os.getenv("POSTGRES_USER", "user"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
+        "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
+        "PORT": "5432",
     }
 }
 
@@ -123,3 +126,5 @@ SPECTACULAR_SETTINGS = {
 
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+
+MEDIA_ROOT = "/vol/web/media"

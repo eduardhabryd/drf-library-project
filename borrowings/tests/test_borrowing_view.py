@@ -28,7 +28,7 @@ def sample_borrowing(**params):
     defaults = {
         "user": user,
         "book": book,
-        "expected_return_date": "2023-11-01",
+        "expected_return_date": datetime.now().date() + timedelta(days=3),
     }
     defaults.update(params)
     return Borrowing.objects.create(**defaults)
@@ -184,22 +184,22 @@ class AdminBorrowingViewSetTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
-# class ReturnBookTestCase(TestCase):
-#     def setUp(self):
-#         self.client = APIClient()
-#         self.borrowing = sample_borrowing()
-#         self.user = self.borrowing.user
-#         self.book = self.borrowing.book
-#         self.client.force_authenticate(self.user)
-#
-#     def test_return_book(self):
-#         response = self.client.post(
-#             reverse("borrowing:return-book", kwargs={"pk": self.borrowing.id})
-#         )
-#
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(response.data, {"status": "Book has been returned."})
-#         self.borrowing.refresh_from_db()
-#         self.assertIsNotNone(self.borrowing.actual_return_date)
-#         self.book.refresh_from_db()
-#         self.assertEqual(self.book.inventory, 2)
+class ReturnBookTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.borrowing = sample_borrowing()
+        self.user = self.borrowing.user
+        self.book = self.borrowing.book
+        self.client.force_authenticate(self.user)
+
+    def test_return_book(self):
+        response = self.client.post(
+            reverse("borrowing:return-book", kwargs={"pk": self.borrowing.id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {"status": "Book has been returned."})
+        self.borrowing.refresh_from_db()
+        self.assertIsNotNone(self.borrowing.actual_return_date)
+        self.book.refresh_from_db()
+        self.assertEqual(self.book.inventory, 2)
