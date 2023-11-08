@@ -15,6 +15,7 @@ ___
 git clone https://github.com/eduardhabryd/drf-library-project.git
 cd drf-library-project
 ```
+- Set up telegram bot. Instructions are [here](BOT_SETUP.md).
 
 ### 🐳 Run with Docker
 
@@ -66,9 +67,3 @@ Payment List:
 Telegram Notifications:
 
 ![Demo](demo/telegram.png)
-
-
-
-
-
-
