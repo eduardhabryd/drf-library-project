@@ -12,13 +12,14 @@ RUN apt-get update && apt-get -y install libpq-dev gcc
 RUN pip install psycopg2
 
 RUN pip install -r requirements.txt
+RUN pip install celery[redis]
 
 RUN mkdir -p /vol/web/media
 
 RUN adduser \
-         --disabled-password \
-         --no-create-home\
-         user
+    --disabled-password \
+    --no-create-home \
+    user
 
 RUN chown -R user:user /vol/
 RUN chmod -R 755 /vol/web/

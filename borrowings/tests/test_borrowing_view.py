@@ -55,7 +55,8 @@ class BorrowingTests(TestCase):
 
             data = {
                 "borrow_date": datetime.now().date(),
-                "expected_return_date": datetime.now().date() + timedelta(days=3),
+                "expected_return_date": datetime.now().date()
+                + timedelta(days=3),
                 "book": self.book.pk,
             }
 

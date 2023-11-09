@@ -1,10 +1,10 @@
 import os
+from datetime import datetime, timedelta
 
 from aiogram import Bot
 from aiogram.enums import ParseMode
 from aiogram.utils.markdown import hbold
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
@@ -29,5 +29,11 @@ async def successful_notification_handler(borrowing) -> None:
         f"User {borrowing.user} successfully paid for book "
         f"{hbold(borrowing.book.title)}"
     )
+    await bot.send_message(chat_id=CHAT_ID, text=text)
+    await bot.session.close()
+
+
+async def borrowing_overdue_notification_handler(text) -> None:
+    bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
     await bot.send_message(chat_id=CHAT_ID, text=text)
     await bot.session.close()
