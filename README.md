@@ -67,3 +67,6 @@ Payment List:
 Telegram Notifications:
 
 ![Demo](demo/telegram.png)
+
+![image](https://github.com/eduardhabryd/drf-library-project/assets/34722326/779c71c5-9d8d-4c35-bb86-602586f0e6da)
+
