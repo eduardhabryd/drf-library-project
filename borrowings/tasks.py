@@ -22,8 +22,14 @@ def check_borrowing_overdue():
         asyncio.run(borrowing_overdue_notification_handler(text))
     else:
         for borrowing in overdue_borrowings:
-            text += f"User {borrowing.user} overdue book: {hbold(borrowing.book.title)}\n"
+            text += (
+                f"User {borrowing.user} overdue book: "
+                f"{hbold(borrowing.book.title)}\n"
+            )
             text += f"Expected return date: {borrowing.expected_return_date}\n"
             text += f"{borrowing.book.inventory} books left\n\n"
-            text += f"{borrowing.user} please return the book! Or we will find you!"
+            text += (
+                f"{borrowing.user} please return the book! "
+                f"Or we will find you!"
+            )
             asyncio.run(borrowing_overdue_notification_handler(text))

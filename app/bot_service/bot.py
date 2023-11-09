@@ -37,4 +37,3 @@ async def borrowing_overdue_notification_handler(text) -> None:
     bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
     await bot.send_message(chat_id=CHAT_ID, text=text)
     await bot.session.close()
-
