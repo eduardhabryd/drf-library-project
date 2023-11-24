@@ -12,6 +12,30 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-key")
 
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
+DB_TYPE = os.getenv("DB_TYPE", "sqlite")
+
+
+def get_db():
+    if DB_TYPE == "sqlite":
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
+    else:
+        return {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": os.getenv("POSTGRES_DB", "app"),
+                "USER": os.getenv("POSTGRES_USER", "user"),
+                "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
+                "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
+                "PORT": "5432",
+            }
+        }
+
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -63,16 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "app.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "app"),
-        "USER": os.getenv("POSTGRES_USER", "user"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "password"),
-        "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
-        "PORT": "5432",
-    }
-}
+DATABASES = get_db()
 
 AUTH_PASSWORD_VALIDATORS = [
     {
