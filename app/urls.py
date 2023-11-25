@@ -9,15 +9,15 @@ urlpatterns = [
     path(
         "api/borrowings/", include("borrowings.urls", namespace="borrowings")
     ),
+    path("api/payments/", include("payments.urls", namespace="payments")),
+    path(
+        "api/stripe_pay/",
+        include("stripe_pay.urls", namespace="stripe_pay")
+    ),
     path("api/doc/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/doc/swagger/",
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
-    ),
-    path("api/payments/", include("payments.urls", namespace="payments")),
-    path(
-        "api/stripe_pay/",
-        include("stripe_pay.urls", namespace="stripe_pay")
     ),
 ]
