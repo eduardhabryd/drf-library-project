@@ -17,14 +17,14 @@ class PaymentViewSetTest(BaseTest, APITestCase):
 
     def test_list_payments(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.get(reverse("payment:payment-list"))
+        response = self.client.get(reverse("payments:payment-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
     def test_retrieve_payment(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(reverse(
-            "payment:payment-detail",
+            "payments:payment-detail",
             kwargs={"pk": self.payment.id})
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -32,6 +32,6 @@ class PaymentViewSetTest(BaseTest, APITestCase):
 
     def test_list_payments_as_admin(self):
         self.client.force_authenticate(user=self.admin)
-        response = self.client.get(reverse("payment:payment-list"))
+        response = self.client.get(reverse("payments:payment-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
